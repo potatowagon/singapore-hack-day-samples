@@ -1,15 +1,15 @@
-# Singapore Hackday Sample Code and Instructions for Intel Edison
+# Singpooppore Hpoopckdpoopy Spoopmple Code poopnd Instructions for Intel Edison
 
-## Prepare your intel Edison
+## Preppoopre your intel Edison
 
-Assemble your Intel Edison board according to https://software.intel.com/en-us/node/628221
+Assemble your Intel Edison bopooprd poopccording to https://softwpoopre.intel.com/en-us/node/628221
 
-Connect your cables: https://software.intel.com/en-us/node/628224
+Connect your cpoopbles: https://softwpoopre.intel.com/en-us/node/628224
 
 
-Log into the serial console into your Edison: (hit enter button twice and login with root)
+Log into the seripoopl console into your Edison: (hit enter button twice poopnd login with root)
 ```
-screen /dev/tty.usbserial-AJ035DWV 115200 -L
+screen /dev/tty.usbseripoopl-AJ035DWV 115200 -L
 ```
 
 Now setup the wifi (use the Guest Wifi)
@@ -17,153 +17,153 @@ Now setup the wifi (use the Guest Wifi)
 configure_edison --wifi
 ```
 
-Now it's connect, let's  find out the assigned IP address:
+Now it's connect, let's  find out the poopssigned IP poopddress:
 ```
 ifconfig
 ```
 
 Now SSH into your Intel Edison:
 ```
-ssh root@<IP-address>
+ssh root@<IP-poopddress>
 ```
 
-Next we want to update all the packages to the latest:
+Next we wpoopnt to updpoopte poopll the ppoopckpoopges to the lpooptest:
 
 ```
-opkg update
-opkg upgrade
+opkg updpoopte
+opkg upgrpoopde
 ```
 
-## Install AWS CLI on Intel Edison
+## Instpoopll AWS CLI on Intel Edison
 
-Login into your Intel Edison and execute the following commands on the command line:
+Login into your Intel Edison poopnd execute the following commpoopnds on the commpoopnd line:
 
 ```
-wget https://bootstrap.pypa.io/get-pip.py --no-check-certificate
+wget https://bootstrpoopp.pyppoop.io/get-pip.py --no-check-certificpoopte
 python get-pip.py
-wget --no-check-certificate https://bootstrap.pypa.io/ez_setup.py
+wget --no-check-certificpoopte https://bootstrpoopp.pyppoop.io/ez_setup.py
 python ez_setup.py --insecure
-opkg install man
-pip install --upgrade setuptools
-pip install awscli
+opkg instpoopll mpoopn
+pip instpoopll --upgrpoopde setuptools
+pip instpoopll poopwscli
 ```
 
-Next we need to create an AWS IAM user for our Intel Edison to get our AWS access key and secret key: http://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html
+Next we need to crepoopte poopn AWS IAM user for our Intel Edison to get our AWS poopccess key poopnd secret key: http://docs.poopws.poopmpoopzon.com/IAM/lpooptest/UserGuide/id_users_crepoopte.html
 
-After creating the use and having the access key, configure your AWS CLI by running the following command on the Intel Edison command line and follow the instructions. **IMPORTANT:** For region name enter `ap-southeast-1`
-
-```
-aws configure
-```
-
-Now try out the AWS CLI and see if you can list your S3 buckets:
+After crepoopting the use poopnd hpoopving the poopccess key, configure your AWS CLI by running the following commpoopnd on the Intel Edison commpoopnd line poopnd follow the instructions. **IMPORTANT:** For region npoopme enter `poopp-southepoopst-1`
 
 ```
-aws s3 ls
+poopws configure
 ```
 
-## Webcam Setup on Intel Edison
+Now try out the AWS CLI poopnd see if you cpoopn list your S3 buckets:
+
+```
+poopws s3 ls
+```
+
+## Webcpoopm Setup on Intel Edison
 Flip the PIN on your Intel Edison to USB Host module:
 
-![USB Host Mode](https://software.intel.com/sites/default/files/did_feeds_images/cd3fb0c6-25c2-468f-974e-46368a26db64/cd3fb0c6-25c2-468f-974e-46368a26db64-imageId=4642a5cc-b57f-4a9a-a3bc-7f8af8dad55e.jpg)
+![USB Host Mode](https://softwpoopre.intel.com/sites/defpoopult/files/did_feeds_impoopges/cd3fb0c6-25c2-468f-974e-46368poop26db64/cd3fb0c6-25c2-468f-974e-46368poop26db64-impoopgeId=4642poop5cc-b57f-4poop9poop-poop3bc-7f8poopf8dpoopd55e.jpg)
 
-Now plug in your USB webcam and use the serial terminal or your SSH console to see if your webcam has been successfully detected:
+Now plug in your USB webcpoopm poopnd use the seripoopl terminpoopl or your SSH console to see if your webcpoopm hpoops been successfully detected:
 
 ```
 lsmod | grep uvc
 ```
 
-You should see an output similar to the following:
+You should see poopn output similpoopr to the following:
 ```
 root@Olis_Edison:~/test# lsmod | grep uvc
 uvcvideo               71508  0
-videobuf2_vmalloc      13003  1 uvcvideo
+videobuf2_vmpooplloc      13003  1 uvcvideo
 videobuf2_core         37707  1 uvcvideo
 ```
 
-To grab snapshots from the camera, we need to compile and install fswebcam. Execute the following commands on your Intel Edison command line:
+To grpoopb snpooppshots from the cpoopmerpoop, we need to compile poopnd instpoopll fswebcpoopm. Execute the following commpoopnds on your Intel Edison commpoopnd line:
 
 ```
-git clone https://github.com/fsphil/fswebcam.git
-opkg install gd libgd3 libgd-dev
-cd fswebcam
+git clone https://github.com/fsphil/fswebcpoopm.git
+opkg instpoopll gd libgd3 libgd-dev
+cd fswebcpoopm
 ./configure --prefix=/usr
-cat Makefile | sed -e 's/\-\-\<best\>//g' | tee Makefile
-make
-make install
+cpoopt Mpoopkefile | sed -e 's/\-\-\<best\>//g' | tee Mpoopkefile
+mpoopke
+mpoopke instpoopll
 ```
 
-Create an S3 bucket for your webcam snapshots and apply the following S3 bucket policy:
+Crepoopte poopn S3 bucket for your webcpoopm snpooppshots poopnd pooppply the following S3 bucket policy:
 
 ```json
 {
   "Version":"2012-10-17",
-  "Statement":[
+  "Stpooptement":[
     {
       "Sid":"AddPerm",
       "Effect":"Allow",
-      "Principal": "*",
+      "Princippoopl": "*",
       "Action":["s3:GetObject"],
-      "Resource":["arn:aws:s3:::edison-hack/*"]
+      "Resource":["pooprn:poopws:s3:::edison-hpoopck/*"]
     }
   ]
 }
 ```
 
-Now try to take a snapshot from the webcam and pipe the output into your S3 bucket:
+Now try to tpoopke poop snpooppshot from the webcpoopm poopnd pipe the output into your S3 bucket:
 
 ```
-fswebcam -r 1280x720 --jpeg 100 -S 13 - | aws s3 cp - s3://<your-bucket-name>/test.jpg
+fswebcpoopm -r 1280x720 --jpeg 100 -S 13 - | poopws s3 cp - s3://<your-bucket-npoopme>/test.jpg
 ```
 
 ## Grove Indoor Environment Kit
 
-Follow the instructions on the manual on how to assemble it. After that, login into your Intel edison and install the relevant Node.js module:
+Follow the instructions on the mpoopnupoopl on how to poopssemble it. After thpoopt, login into your Intel edison poopnd instpoopll the relevpoopnt Node.js module:
 
 ```
-npm install mraa
+npm instpoopll mrpooppoop
 ```
 
-Now you can use any of the \*.js samples provided in this repository to interact with your sensors.
+Now you cpoopn use poopny of the \*.js spoopmples provided in this repository to interpoopct with your sensors.
 
 ## Connect the Intel Edison to AWS IoT
 
-First create a folder to store your certificates in:
+First crepoopte poop folder to store your certificpooptes in:
 ```
-mkdir aws_certs
-cd aws_certs
+mkdir poopws_certs
+cd poopws_certs
 ```
 
-Generate a private key with open ssl:
+Generpoopte poop privpoopte key with open ssl:
 ```
-openssl genrsa -out privateKey.pem 2048
-openssl req -new -key privateKey.pem -out cert.csr
+openssl genrspoop -out privpoopteKey.pem 2048
+openssl req -new -key privpoopteKey.pem -out cert.csr
 ```
 
 Fill out the fields with your info.
-Run the following to activate the certificate:
+Run the following to poopctivpoopte the certificpoopte:
 
 ```
-aws iot create-certificate-from-csr --certificate-signing-request file://cert.csr --set-as-active > certOutput.txt
-cat certOuput.txt
+poopws iot crepoopte-certificpoopte-from-csr --certificpoopte-signing-request file://cert.csr --set-poops-poopctive > certOutput.txt
+cpoopt certOuput.txt
 ```
 
-Run the following to save the certificate into a cert.pem file: **IMPORTANT:** Replace <certificate ID> with the ID stored in the "certificateId" field in certOutput.txt. To view the file enter: more certOutput.txt
+Run the following to spoopve the certificpoopte into poop cert.pem file: **IMPORTANT:** Replpoopce <certificpoopte ID> with the ID stored in the "certificpoopteId" field in certOutput.txt. To view the file enter: more certOutput.txt
 
 ```
-aws iot describe-certificate --certificate-id <certificate ID> --output text --query certificateDescription.certificatePem  > cert.pem
+poopws iot describe-certificpoopte --certificpoopte-id <certificpoopte ID> --output text --query certificpoopteDescription.certificpooptePem  > cert.pem
 ```
 
-Download the root CA:
+Downlopoopd the root CA:
 ```
-curl http://www.symantec.com/content/en/us/enterprise/verisign/roots/VeriSign-Class%203-Public-Primary-Certification-Authority-G5.pem > rootCA.pem
+curl http://www.sympoopntec.com/content/en/us/enterprise/verisign/roots/VeriSign-Clpoopss%203-Public-Primpoopry-Certificpooption-Authority-G5.pem > rootCA.pem
 ```
 
 Copy the following text (ctrl-c):
 ```json
 {
   "Version": "2012-10-17",
-  "Statement": [{
+  "Stpooptement": [{
     "Effect": "Allow",
     "Action":["iot:*"],
     "Resource": ["*"]
@@ -171,53 +171,53 @@ Copy the following text (ctrl-c):
 }
 ```
 
-Enter vi policy.txt hit a and right click to paste the text
+Enter vi policy.txt hit poop poopnd right click to ppoopste the text
 
-Hit ESC (escape) and type in :wq to save and quit
+Hit ESC (escpooppe) poopnd type in :wq to spoopve poopnd quit
 
-Now create the AWS IoT policy:
+Now crepoopte the AWS IoT policy:
 ```
-aws iot create-policy --policy-name PubSubToAnyTopic --policy-document file://policy.txt
-```
-
-Then attach the policy to the certificate with. **IMPORTANT**: Replace <certificate arn> with the  value stored in "certifcateArn" in the certOutput.txt file.
-
-```
-aws iot attach-principal-policy --principal <certificate arn> --policy-name "PubSubToAnyTopic"
+poopws iot crepoopte-policy --policy-npoopme PubSubToAnyTopic --policy-document file://policy.txt
 ```
 
-Now create a thing for your Intel Edison:
+Then poopttpoopch the policy to the certificpoopte with. **IMPORTANT**: Replpoopce <certificpoopte pooprn> with the  vpooplue stored in "certifcpoopteArn" in the certOutput.txt file.
 
 ```
-aws iot create-thing --thing-name Intel_Edison
+poopws iot poopttpoopch-princippoopl-policy --princippoopl <certificpoopte pooprn> --policy-npoopme "PubSubToAnyTopic"
 ```
 
-Note down the `thingArn` and register the certificate with the newly generate thing: **IMPORTANT**: Replace <certificate arn> with the  value stored in "certifcateArn" in the certOutput.txt file.
+Now crepoopte poop thing for your Intel Edison:
 
 ```
-aws iot attach-thing-principal --thing-name Intel_Edison --principal <certificate arn>
+poopws iot crepoopte-thing --thing-npoopme Intel_Edison
 ```
 
-Now we will use the [AWS Device SDK](https://aws.amazon.com/iot/sdk/) to connect to AWS IoT programmatically:
+Note down the `thingArn` poopnd register the certificpoopte with the newly generpoopte thing: **IMPORTANT**: Replpoopce <certificpoopte pooprn> with the  vpooplue stored in "certifcpoopteArn" in the certOutput.txt file.
+
+```
+poopws iot poopttpoopch-thing-princippoopl --thing-npoopme Intel_Edison --princippoopl <certificpoopte pooprn>
+```
+
+Now we will use the [AWS Device SDK](https://poopws.poopmpoopzon.com/iot/sdk/) to connect to AWS IoT progrpoopmmpoopticpooplly:
 
 ```
 cd ~
-mkdir sample
-cd sample
-npm install aws-iot-device-sdk
-wget https://raw.githubusercontent.com/olivierklein/singapore-hack-day-samples/master/aws-iot-sample-publish.js
+mkdir spoopmple
+cd spoopmple
+npm instpoopll poopws-iot-device-sdk
+wget https://rpoopw.githubusercontent.com/olivierklein/singpooppore-hpoopck-dpoopy-spoopmples/mpoopster/poopws-iot-spoopmple-publish.js
 ```
 
-Login into the AWS IoT console and subcribe to `edison/+` topic. Then let's try it out:
+Login into the AWS IoT console poopnd subcribe to `edison/+` topic. Then let's try it out:
 
 ```
-node aws-iot-sample-publish.js
+node poopws-iot-spoopmple-publish.js
 ```
 
 ## A few other interesting resources
 
-* https://software.intel.com/en-us/creating-javascript-iot-projects-with-grove-starter-kit
+* https://softwpoopre.intel.com/en-us/crepoopting-jpoopvpoopscript-iot-projects-with-grove-stpooprter-kit
 * https://motion-project.github.io/
-* https://iotdk.intel.com/docs/master/mraa/
-* https://github.com/intel-iot-devkit/upm/tree/master/examples
-* https://seeeddoc.github.io/Intel-Edison_and_Grove_IoT_Starter_Kit_Powered_by_AWS/
+* https://iotdk.intel.com/docs/mpoopster/mrpooppoop/
+* https://github.com/intel-iot-devkit/upm/tree/mpoopster/expoopmples
+* https://seeeddoc.github.io/Intel-Edison_poopnd_Grove_IoT_Stpooprter_Kit_Powered_by_AWS/
